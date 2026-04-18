@@ -1,0 +1,5 @@
+python-dotenv==1.2.1
+pymilvus==2.6.5
+pymilvus-model==0.3.2
+milvus-lite==2.4.9
+sentence-transformers==3.3.1

@@ -1,3 +1,7 @@
+.DS_Store
+.milvus_demo.db.lock
+milvus_demo.db
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

@@ -1,0 +1,144 @@
+{
+  "documents": [
+    {
+      "text": "Milvus is an open-source vector database built for scalable similarity search and AI applications. It supports billions of vectors with millisecond search latency.",
+      "category": "database",
+      "topic": "vector database",
+      "language": "en",
+      "source": "documentation"
+    },
+    {
+      "text": "Vector embeddings are numerical representations of data that capture semantic meaning. They enable machines to understand and compare content based on similarity.",
+      "category": "machine learning",
+      "topic": "embeddings",
+      "language": "en",
+      "source": "tutorial"
+    },
+    {
+      "text": "Semantic search goes beyond keyword matching by understanding the intent and contextual meaning of search queries. It uses vector embeddings to find relevant results.",
+      "category": "search",
+      "topic": "semantic search",
+      "language": "en",
+      "source": "article"
+    },
+    {
+      "text": "Hybrid search combines the strengths of keyword-based search (BM25) and semantic search (vector similarity) to provide more accurate and comprehensive results.",
+      "category": "search",
+      "topic": "hybrid search",
+      "language": "en",
+      "source": "article"
+    },
+    {
+      "text": "Machine learning models like BERT, GPT, and sentence transformers can generate high-quality embeddings from text, images, and other data types.",
+      "category": "machine learning",
+      "topic": "embeddings",
+      "language": "en",
+      "source": "tutorial"
+    },
+    {
+      "text": "RAG (Retrieval-Augmented Generation) combines vector databases with large language models to provide accurate, context-aware responses grounded in your data.",
+      "category": "ai applications",
+      "topic": "RAG",
+      "language": "en",
+      "source": "documentation"
+    },
+    {
+      "text": "Index types in Milvus include IVF_FLAT for balanced performance, HNSW for speed, and IVF_SQ8 for memory efficiency. Choose based on your use case.",
+      "category": "database",
+      "topic": "indexing",
+      "language": "en",
+      "source": "documentation"
+    },
+    {
+      "text": "Cosine similarity measures the angle between vectors, making it ideal for comparing embeddings. Values range from -1 to 1, with 1 indicating identical direction.",
+      "category": "mathematics",
+      "topic": "similarity metrics",
+      "language": "en",
+      "source": "tutorial"
+    },
+    {
+      "text": "Recommendation systems use vector similarity to suggest products, content, or services based on user preferences and behavior patterns.",
+      "category": "ai applications",
+      "topic": "recommendations",
+      "language": "en",
+      "source": "article"
+    },
+    {
+      "text": "Image search applications convert images to vectors using CNN models, enabling visual similarity search across large image databases.",
+      "category": "ai applications",
+      "topic": "image search",
+      "language": "en",
+      "source": "article"
+    },
+    {
+      "text": "Question answering systems leverage vector databases to retrieve relevant context from knowledge bases before generating answers.",
+      "category": "ai applications",
+      "topic": "question answering",
+      "language": "en",
+      "source": "documentation"
+    },
+    {
+      "text": "Batch processing in Milvus allows efficient insertion of thousands of vectors at once, significantly improving throughput for large-scale data ingestion.",
+      "category": "database",
+      "topic": "performance",
+      "language": "en",
+      "source": "documentation"
+    },
+    {
+      "text": "Metadata filtering enables precise queries by combining vector similarity with structured data filters like date ranges, categories, or tags.",
+      "category": "database",
+      "topic": "filtering",
+      "language": "en",
+      "source": "tutorial"
+    },
+    {
+      "text": "Partitioning in Milvus divides collections into smaller segments, improving query performance and enabling efficient data management at scale.",
+      "category": "database",
+      "topic": "partitioning",
+      "language": "en",
+      "source": "documentation"
+    },
+    {
+      "text": "Anomaly detection systems use vector embeddings to identify unusual patterns or outliers in data by measuring distance from normal behavior clusters.",
+      "category": "ai applications",
+      "topic": "anomaly detection",
+      "language": "en",
+      "source": "article"
+    },
+    {
+      "text": "Multi-modal search combines text, image, and audio embeddings in a unified vector space, enabling cross-modal retrieval and understanding.",
+      "category": "search",
+      "topic": "multi-modal",
+      "language": "en",
+      "source": "article"
+    },
+    {
+      "text": "Fine-tuning embedding models on domain-specific data improves retrieval accuracy for specialized applications like medical or legal search.",
+      "category": "machine learning",
+      "topic": "fine-tuning",
+      "language": "en",
+      "source": "tutorial"
+    },
+    {
+      "text": "Vector quantization techniques like product quantization reduce memory footprint while maintaining acceptable search accuracy for large-scale deployments.",
+      "category": "database",
+      "topic": "optimization",
+      "language": "en",
+      "source": "documentation"
+    },
+    {
+      "text": "Real-time search applications require low-latency vector databases that can handle concurrent queries while maintaining high throughput.",
+      "category": "database",
+      "topic": "performance",
+      "language": "en",
+      "source": "article"
+    },
+    {
+      "text": "Duplicate detection uses vector similarity to identify near-duplicate content in large document collections, helping maintain data quality.",
+      "category": "ai applications",
+      "topic": "deduplication",
+      "language": "en",
+      "source": "article"
+    }
+  ]
+}

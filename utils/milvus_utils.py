@@ -86,7 +86,7 @@ class MilvusClient(metaclass=Singleton):
         while time.time() < deadline:
             try:
                 if self.client.has_collection(collection_name=collection_name):
-                    self.client.describe_collection(collection_name=collection_name)
+                    _ = self.client.describe_collection(collection_name=collection_name)
                     return
             except MilvusException as exc:
                 last_error = exc

@@ -1,7 +1,11 @@
+import logging
+import time
+from contextlib import contextmanager
 from typing import Any
 
 from pymilvus import CollectionSchema
 from pymilvus import MilvusClient as MC
+from pymilvus.exceptions import MilvusException
 
 from .embeddings_utils import EmbeddingClient
 from .singleton import Singleton
@@ -39,8 +43,9 @@ class MilvusClient(metaclass=Singleton):
     ) -> None:
         if not self.client.has_collection(collection_name=collection_name):
             self.client.create_collection(
-                collection_name=collection_name, schema=schema, kwargs=kwargs
+                collection_name=collection_name, schema=schema, **kwargs
             )
+        self._wait_for_collection_ready(collection_name)
 
     def delete_collection(self, collection_name: str) -> None:
         self.client.drop_collection(collection_name)
@@ -58,14 +63,99 @@ class MilvusClient(metaclass=Singleton):
     def build_index(
         self, collection_name: str, index_type: str, field_name: str, metric_type: str
     ) -> None:
+        if not self.client.has_collection(collection_name=collection_name):
+            raise ValueError(f"Collection '{collection_name}' does not exist")
+
+        if self._field_index_exists(collection_name, field_name):
+            return
+
         index_params = self.client.prepare_index_params()
         index_params.add_index(
             field_name=field_name, metric_type=metric_type, index_type=index_type
         )
-
-        self.client.create_index(
+        self._create_index_with_retry(
             collection_name=collection_name, index_params=index_params
         )
+
+    def _wait_for_collection_ready(
+        self, collection_name: str, timeout: float = 10.0, interval: float = 0.25
+    ) -> None:
+        deadline = time.time() + timeout
+        last_error: Exception | None = None
+
+        while time.time() < deadline:
+            try:
+                if self.client.has_collection(collection_name=collection_name):
+                    self.client.describe_collection(collection_name=collection_name)
+                    return
+            except MilvusException as exc:
+                last_error = exc
+
+            time.sleep(interval)
+
+        if last_error is not None:
+            raise last_error
+
+        raise TimeoutError(
+            f"Collection '{collection_name}' was not ready in {timeout}s"
+        )
+
+    def _field_index_exists(self, collection_name: str, field_name: str) -> bool:
+        return bool(self.client.list_indexes(collection_name, field_name=field_name))
+
+    def _create_index_with_retry(
+        self,
+        collection_name: str,
+        index_params: Any,
+        retries: int = 5,
+        base_delay: float = 0.5,
+    ) -> None:
+        last_error: MilvusException | None = None
+
+        for attempt in range(retries):
+            try:
+                with self._suppress_milvus_logs():
+                    self.client.create_index(
+                        collection_name=collection_name, index_params=index_params
+                    )
+                return
+            except MilvusException as exc:
+                last_error = exc
+                error_text = str(exc).lower()
+
+                if (
+                    not self._is_transient_index_error(error_text)
+                    or attempt == retries - 1
+                ):
+                    raise
+
+                time.sleep(base_delay * (attempt + 1))
+                self._wait_for_collection_ready(collection_name)
+
+        if last_error is not None:
+            raise last_error
+
+    @staticmethod
+    def _is_transient_index_error(error_text: str) -> bool:
+        return "internal error" in error_text or "unrecognized token" in error_text
+
+    @staticmethod
+    @contextmanager
+    def _suppress_milvus_logs():
+        loggers = [
+            logging.getLogger("pymilvus.decorators"),
+            logging.getLogger("pymilvus.client.grpc_handler"),
+        ]
+        previous_states = [(logger.level, logger.disabled) for logger in loggers]
+
+        try:
+            for logger in loggers:
+                logger.disabled = True
+            yield
+        finally:
+            for logger, (level, disabled) in zip(loggers, previous_states):
+                logger.setLevel(level)
+                logger.disabled = disabled
 
     def insert_data(
         self, documents: dict | list[dict], collection_name: str
